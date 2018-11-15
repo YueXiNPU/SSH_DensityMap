@@ -128,6 +128,7 @@ class imdb(object):
         roidb = self.roidb
         for i in xrange(len(self.image_index)):
             roidb[i]['image'] = self.image_path_at(i)
+            roidb[i]['densityMap'] = self.image_path_at(i).replace('WIDER_train/images', 'wider_face_split/wider_face_train_gt_Dot').replace('.jpg','.h5')
             roidb[i]['width'] = roidb[i]['image_size'][0]
             roidb[i]['height'] = roidb[i]['image_size'][1]
             # need gt_overlaps as a dense array for argmax

@@ -99,6 +99,9 @@ def worker(rank, uid, gpus, solver_prototxt, roidb, pretrained_model, max_iter, 
     # Train the model for the specified number of iterations
     while solver.iter < max_iter:
         solver.step(1)
+        #A = solver.net.blobs['conv4_3']
+        #print(A.data.shape)
+        #[(k, v.data.shape) for k, v in solver.net.blobs.items()]
         if (solver.iter%cfg.TRAIN.SNAPSHOT == 0 or solver.iter == max_iter-1) and rank == 0:
             # Snapshot only in the main process
             solverW.snapshot()

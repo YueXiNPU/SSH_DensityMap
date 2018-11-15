@@ -61,6 +61,8 @@ class RoIDataLayer(caffe.Layer):
         # parse the layer parameter string, which must be valid YAML
         layer_params = yaml.load(self.param_str)
 
+
+
         self._num_classes = layer_params['num_classes']
 
         self._name_to_top_map = {}
@@ -79,6 +81,15 @@ class RoIDataLayer(caffe.Layer):
         top[idx].reshape(1, 4)
         self._name_to_top_map['gt_boxes'] = idx
         idx += 1
+
+        # density map blob: hold a batch of N images, each with 1 channels
+        top[idx].reshape(cfg.TRAIN.IMS_PER_BATCH, 1,
+                         max(cfg.TRAIN.SCALES), cfg.TRAIN.MAX_SIZE)
+        self._name_to_top_map['gt_densityMap'] = idx
+        idx += 1
+
+
+
 
         assert len(top) == len(self._name_to_top_map)
 

@@ -31,7 +31,7 @@ class AnchorTargetLayer(caffe.Layer):
         self._hard_mining = False
         if len(bottom) == 5:
             self._hard_mining = True
-        anchor_scales = layer_params.get('scales', (8, 16, 32))
+            anchor_scales = layer_params.get('scales', (8, 16, 32))
         self._anchor_ratios = layer_params.get('ratios',(0.5, 1, 2))
         base_size = layer_params.get('base_size', 16)
         self._anchors = generate_anchors(scales=np.array(anchor_scales), base_size=base_size,

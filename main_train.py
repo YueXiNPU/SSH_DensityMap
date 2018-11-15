@@ -17,7 +17,7 @@ def parser():
     parser.add_argument('--db', dest='db_name', help='Path to the image',
                         default='wider_train', type=str)
     parser.add_argument('--gpus', dest='gpu_ids', help='The GPU id[s] to be used',
-                        default='0,1,2,3', type=str)
+                        default='0', type=str)
     parser.add_argument('--solver', dest='solver_proto', help='SSH caffe solver prototxt',
                         default='SSH/models/solver_ssh.prototxt', type=str)
     parser.add_argument('--out_path', dest='out_path', help='Output path for saving the figure',
@@ -38,6 +38,7 @@ if __name__ == '__main__':
 
     # Get command line arguments
     args = parser()
+
 
     # Combine external configs with SSH default configs
     if args.cfg is not None:

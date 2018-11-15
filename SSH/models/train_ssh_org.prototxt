@@ -289,55 +289,6 @@ layer {
   bottom: "conv4_3"
   top: "conv4_3"
 }
-# convolution layer for density estimation by Yue
-layer{
-  name: "ssh_densityMap"
-  type: "Convolution"
-  bottom: "conv4_3"
-  top: "ssh_densityMap"
-  param{
-    lr_mult: 1
-  }
-  param{
-    lr_mult:2
-  }
-  convolution_param{
-    num_output: 1
-    pad: 1
-    kernel_size: 1
-  }
-}
-layer{
-  name: "ssh_relu_densityMap"
-  type: "ReLU"
-  bottom: "ssh_densityMap"
-  top: "ssh_densityMap"
-}
-# resize gt_density by Yue
-layer {
-  name: "resizelayer"
-  type: "Python"
-  top: "gt_resize_densityMap"
-  bottom: "ssh_densityMap"
-  bottom: "gt_densityMap"
-  python_param {
-    module: "SSH.layers.resize_layer"
-    layer: "ResizeLayer"
-  }
-}
-
-# L2 loss for density estimation by Yue
-layer{
-name: "densityMap_l2_loss"
-type: "EuclideanLoss"
-bottom: "ssh_densityMap"
-bottom: "gt_resize_densityMap"
-#bottom: "gt_densityMap"
-top: "densityMap_l2_loss"
-loss_weight: 1
-}
-
-
 layer {
   name: "pool4"
   type: "Pooling"

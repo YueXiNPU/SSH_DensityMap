@@ -32,6 +32,10 @@ class wider(imdb):
             self._dataset_path = wider_path
         self._imgs_path = os.path.join(self._dataset_path, 'WIDER_{}'.format(split), 'images')
 
+        # Read the density map of each image
+        self._densityMap_path = self._imgs_path.replace('WIDER_train/images', 'wider_face_split/wider_face_train_gt_Dot')
+        print(self._densityMap_path)
+
         # Read the annotations file
         anno_path = os.path.join(self._dataset_path,'wider_face_split',self._annotation_file_name)
         assert os.path.isfile(anno_path), 'Annotation file not found {}'.format(anno_path)

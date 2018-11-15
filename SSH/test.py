@@ -61,7 +61,7 @@ def forward_net(net, blob, im_scale, pyramid='False'):
     return probs, pred_boxes
 
 
-def detect(net, im_path, thresh=0.05, visualize=False, timers=None, pyramid=False, visualization_folder=None):
+def detect(net, im_path, thresh=0.05, visualize=False, timers=None, pyramid=False, dect_visualization_folder=None):
     """
     Main module to detect faces
     :param net: The trained network
@@ -78,6 +78,7 @@ def detect(net, im_path, thresh=0.05, visualize=False, timers=None, pyramid=Fals
                   'misc': Timer()}
 
     im = cv2.imread(im_path)
+    im_class__file = im_path.split('/')[-2]
     imfname = os.path.basename(im_path)
     sys.stdout.flush()
     timers['detect'].tic()
@@ -120,12 +121,13 @@ def detect(net, im_path, thresh=0.05, visualize=False, timers=None, pyramid=Fals
     cls_dets = dets[keep, :]
     if visualize:
         plt_name = os.path.splitext(imfname)[0] + '_detections_{}'.format(net.name)
-        visusalize_detections(im, cls_dets, plt_name=plt_name, visualization_folder=visualization_folder)
+        dect_visualization_folder = os.path.join(dect_visualization_folder, im_class__file)
+        visusalize_detections(im, cls_dets, plt_name=plt_name, visualization_folder=dect_visualization_folder)
     timers['misc'].toc()
     return cls_dets,timers
 
 
-def test_net(net, imdb, thresh=0.05, visualize=False,no_cache=False,output_path=None):
+def test_net(net, imdb, thresh=0.05, visualize=False,no_cache=False,output_path=None,vis_folder=None):
     """
     Testing the SSH network on a dataset
     :param net: The trained network
@@ -160,8 +162,9 @@ def test_net(net, imdb, thresh=0.05, visualize=False,no_cache=False,output_path=
 
         for i in xrange(len(imdb)):
             im_path =imdb.image_path_at(i)
+
             dets[1][i], detect_time = detect(net, im_path, thresh, visualize=visualize,
-                                             timers=timers, pyramid=pyramid)
+                                             timers=timers, pyramid=pyramid, dect_visualization_folder = vis_folder)
             print('\r{:d}/{:d} detect-time: {:.3f}s, misc-time:{:.3f}s'
                   .format(i + 1, len(imdb), timers['detect'].average_time,
                           timers['misc'].average_time),end='')

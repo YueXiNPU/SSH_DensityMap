@@ -29,7 +29,10 @@ def parser():
     parser.add_argument('--cfg', dest='cfg', help='Config file to overwrite the default configs',
                         default='SSH/configs/wider.yml', type=str)
     parser.add_argument('--vis', dest='visualize', help='visualize detections',
-                        action='store_true')
+                        action='store_true', default='False')
+    # to save vis_detection_results by Yue.
+    parser.add_argument('--vis_dir', dest='visualize_folder', help='Path to the images of visualize detection',
+                        default='output/ssh/wider_val/SSH/detect_vis', type=str)
     parser.add_argument('--net_name', dest='net_name',
                         help='The name of the experiment',
                         default='SSH',type=str)
@@ -63,7 +66,7 @@ def main(args):
     net.name = args.net_name
 
     # Evaluate the network
-    test_net(net, imdb, visualize=args.visualize, no_cache=args.no_cache, output_path=args.out_path)
+    test_net(net, imdb, visualize=args.visualize, no_cache=args.no_cache, output_path=args.out_path, vis_folder = args.visualize_folder)
 
 
 if __name__ == '__main__':
